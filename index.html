@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explainable Network Verification via Subspecifications - User Study</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-size: 16px;
+            font-weight: 525;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        .title {
+            margin-bottom: 40px;
+        }
+        
+        .title h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 4px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .title h2 {
+            color: #666;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            margin-bottom: 0;
+        }
+        
+        .form-table {
+            width: auto;
+            border-collapse: collapse;
+            margin: 0 auto 40px auto;
+        }
+        
+        .form-table tr {
+            height: 60px;
+        }
+        
+        .label-cell {
+            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            text-align: right;
+            padding-right: 20px;
+            width: 220px;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        
+        .content-cell {
+            padding-left: 10px;
+            vertical-align: middle;
+            text-align: left;
+        }
+        
+        .separator-row {
+            height: 20px;
+        }
+        
+        .separator-cell {
+            padding: 0;
+            text-align: center;
+        }
+        
+        .separator-line {
+            height: 2px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            margin: 10px 0;
+        }
+        
+        .lang-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .lang-btn {
+            padding: 12px 25px;
+            font-size: 16px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #667eea;
+            font-weight: 500;
+        }
+        
+        .lang-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .lang-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .lang-btn.active:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .number-input {
+            width: 210px;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+        
+        .number-input::placeholder {
+            color: #bbb;
+            opacity: 0.7;
+        }
+        
+        .number-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .group-info {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
+        }
+        
+        .coursera-btn {
+            padding: 0;
+            font-size: 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            width: 210px;
+            height: 60px;
+            text-align: center;
+            line-height: 60px;
+        }
+        
+        .coursera-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .start-btn {
+            padding: 0;
+            font-size: 20px;
+            border: 2px solid #667eea;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            color: #667eea;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            width: 210px;
+            height: 60px;
+            text-align: center;
+            line-height: 56px;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            background: #f0f4ff;
+        }
+        
+        .start-btn:disabled {
+            background: #f5f5f5;
+            border-color: #ccc;
+            color: #999;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .modal p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-weight: bold;
+            min-width: 150px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .browser-firefox {
+            font-size: 17px;
+        }
+        
+        .browser-safari {
+            font-size: 16px;
+        }
+        
+        .browser-chrome,
+        .browser-other {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h1>Explainable Network Verification via Subspecifications - User Study</h1>
+        </div>
+        
+        <table class="form-table">
+            <tr>
+                <td class="label-cell">Enter 4-digit number</td>
+                <td class="content-cell">
+                    <input type="text" class="number-input" id="userNumber" maxlength="4" placeholder="1234">
+                </td>
+            </tr>
+            <tr class="separator-row">
+                <td colspan="2" class="separator-cell">
+                    <div class="separator-line"></div>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="button-container">
+            <button class="coursera-btn" id="courseraBtn" onclick="goToCoursera()">
+                <span>Sample Questions</span>
+            </button>
+            <button class="start-btn" id="startBtn" onclick="showConfirmModal()" disabled>
+                <span id="startText">Start</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="validationModal" class="modal">
+        <div class="modal-content">
+            <h3>⚠️ Selection Required</h3>
+            <p>Please enter a 4-digit number</p>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="closeValidationModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3>Please watch the introduction videos</h3>
+            <p>Please watch both introduction videos before starting the user study.</p>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="confirmStart()">Start Study</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedLanguage = 'en';
+        let userNumber = '';
+        
+        function goToCoursera() {
+            localStorage.setItem('selectedLanguage', selectedLanguage);
+            localStorage.setItem('userNumber', userNumber);
+            window.location.href = 'coursera_en.html';
+        }
+        
+        
+        document.getElementById('userNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) {
+                value = value.substring(0, 4);
+            }
+            e.target.value = value;
+            userNumber = value;
+            localStorage.setItem('userNumber', userNumber);
+            document.getElementById('startBtn').disabled = value.length !== 4;
+        });
+        
+        function showConfirmModal() {
+            if (!userNumber || userNumber.length !== 4) {
+                showValidationModal();
+                return;
+            }
+            document.getElementById('confirmModal').style.display = 'block';
+        }
+        
+        function showValidationModal() {
+            document.getElementById('validationModal').style.display = 'block';
+        }
+        
+        function closeValidationModal() {
+            document.getElementById('validationModal').style.display = 'none';
+        }
+        
+        function confirmStart() {
+            const lastDigit = parseInt(userNumber.slice(-1));
+            const isOdd = lastDigit % 2 === 1;
+            const group = isOdd ? 'A' : 'B';
+            localStorage.setItem('selectedLanguage', selectedLanguage);
+            localStorage.setItem('userNumber', userNumber);
+            closeConfirmModal();
+            const targetPage = `group${group}_en.html?userNumber=${userNumber}`;
+            window.location.href = targetPage;
+        }
+        
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+        
+        function initializePage() {
+            const savedUserNumber = localStorage.getItem('userNumber');
+            if (savedUserNumber) {
+                userNumber = savedUserNumber;
+                const inputElement = document.getElementById('userNumber');
+                inputElement.value = savedUserNumber;
+                document.getElementById('startBtn').disabled = savedUserNumber.length !== 4;
+            }
+        }
+        
+        initializePage();
+    </script>
+</body>
+</html>
